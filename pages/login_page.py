@@ -1,7 +1,7 @@
-class LoginPage:
+from pages.base_page import BasePage
 
-    def __init__(self, page):
-        self.page = page
+
+class LoginPage(BasePage):
 
     def login(self, username, password):
         self.page.fill("#username", username)
