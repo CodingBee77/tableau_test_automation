@@ -2,7 +2,6 @@ from pages.base_page import BasePage
 
 
 class DashboardPage(BasePage):
-
     def wait_until_loaded(self):
         self.page.wait_for_selector(".tab-dashboard")
 
