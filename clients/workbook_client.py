@@ -2,7 +2,6 @@ from clients.base_client import BaseTableauClient
 
 
 class WorkbookClient(BaseTableauClient):
-
     def get_workbook_by_name(self, workbook_name):
         workbooks, _ = self.server.workbooks.get()
 
