@@ -1,0 +1,5 @@
+pytest
+tableauserverclient
+playwright
+pytest-playwright
+python-dotenv
