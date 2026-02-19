@@ -1,6 +1,0 @@
-server_url: https://your-tableau-server.com
-site_id: site-name
-token_name: ${TOKEN_NAME}
-token_value: ${TOKEN_VALUE}
-project_name: Default
-workbook_name: Sales Dashboard
