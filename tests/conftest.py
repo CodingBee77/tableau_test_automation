@@ -1,34 +1,53 @@
-import sys
-from pathlib import Path
-
 import pytest
 
+from config.config import config
 from drivers.driver_factory import DriverFactory
-
-# Add parent directory to path to resolve imports
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
 from clients.tableau_client import TableauClient
+from clients.workbook_client import WorkbookClient
 
 
 @pytest.fixture(scope="session")
-def tableau_client():
-    client = TableauClient()
-    with client.sign_in():
+def app_config():
+    """
+    Provide the loaded configuration object to tests.
+    """
+    return config
+
+
+@pytest.fixture(scope="session")
+def tableau_client(app_config):
+    """
+    Yield a signed-in Tableau Server client for API tests.
+    """
+    client = TableauClient.from_config(app_config)
+    with client.session():
         yield client.server
 
 
-@pytest.fixture
-def base_url():
-    return "https://public.tableau.com"  # Replace with your actual Tableau server URL
+@pytest.fixture(scope="session")
+def workbook_client(app_config):
+    """
+    Yield a signed-in WorkbookClient for workbook-centric tests.
+    """
+    client = WorkbookClient.from_config(app_config)
+    with client.session():
+        yield client
 
 
 @pytest.fixture
-def page():
+def base_url(app_config):
+    """
+    Base URL for public Tableau checks.
+    """
+    return app_config.ui_url or "https://public.tableau.com"
 
-    driver = DriverFactory()
+
+@pytest.fixture
+def page(app_config):
+    driver = DriverFactory(browser=app_config.browser, headless=app_config.headless)
     page = driver.launch()
 
-    yield page
-
-    driver.close()
+    try:
+        yield page
+    finally:
+        driver.close()

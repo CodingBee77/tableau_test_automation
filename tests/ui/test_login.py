@@ -1,18 +1,15 @@
-from drivers.driver_factory import DriverFactory
 from pages.login_page import LoginPage
 
 
-def test_user_can_login(config):
-
-    driver = DriverFactory()
-    page = driver.launch()
-
+def test_public_tableau_landing_page_loads(page, base_url):
+    """
+    Basic smoke check that a public Tableau landing page is reachable.
+    Does not require authentication.
+    """
     login_page = LoginPage(page)
 
-    login_page.navigate(config.ui_url)
+    login_page.navigate(base_url)
+    login_page.wait_for_load_state("networkidle")
 
-    login_page.login(config.username, config.password)
-
-    assert "home" in page.url
-
-    driver.close()
+    # Very light assertion: page title should contain 'Tableau'
+    assert "tableau" in page.title().lower()

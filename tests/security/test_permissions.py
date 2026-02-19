@@ -1,4 +1,4 @@
-from clients import WorkbookClient
+from clients.workbook_client import WorkbookClient
 
 
 def test_workbook_permissions(workbook_client: WorkbookClient):
